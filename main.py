@@ -10,6 +10,7 @@ class Paciente(BaseModel):
     edad: int
     cedula: str
     id: int
+    city: str
 
 # Lista para almacenar paciente (simulación de base de datos)
 paciente_db = []
@@ -35,7 +36,7 @@ def get_paciente_by_id(paciente_id: int):
 
 # Operación para editar una paciente por ID
 @app.put("/paciente/{paciente_id}", response_model=Paciente)
-def update_paciente(paciente_id: int, updated_person: Paciente):
+def update_paciente(paciente_id: int, updated_paciente: Paciente):
     for index, paciente in enumerate(paciente_db):
         if paciente.id == paciente_id:
             paciente_db[index] = updated_paciente
