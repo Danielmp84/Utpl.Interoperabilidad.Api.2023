@@ -4,49 +4,49 @@ from typing import List
 
 app = FastAPI()
 
-# Modelo de datos para una persona
-class Person(BaseModel):
-    name: str
-    age: int
-    email: str
+# Modelo de datos para una paciente
+class Paciente(BaseModel):
+    nombre: str
+    edad: int
+    cedula: str
     id: int
 
-# Lista para almacenar personas (simulación de base de datos)
-people_db = []
+# Lista para almacenar paciente (simulación de base de datos)
+paciente_db = []
 
-# Operación para crear una persona
-@app.post("/persona/", response_model=Person)
-def create_person(person: Person):
-    people_db.append(person)
-    return person
+# Operación para crear una paciente
+@app.post("/paciente/", response_model=Paciente)
+def create_paciente(paciente: Paciente):
+    paciente_db.append(paciente)
+    return paciente
 
-# Operación para obtener todas las personas
-@app.get("/persona/", response_model=List[Person])
-def get_all_people():
-    return people_db
+# Operación para obtener todas las paciente
+@app.get("/paciente/", response_model=List[Paciente])
+def get_all_paciente():
+    return paciente_db
 
-# Operación para obtener una persona por ID
-@app.get("/persona/{person_id}", response_model=Person)
-def get_person_by_id(person_id: int):
-    for person in people_db:
-        if person.id == person_id:
-            return person
-    raise HTTPException(status_code=404, detail="Persona no encontrada")
+# Operación para obtener una paciente por ID
+@app.get("/paciente/{paciente_id}", response_model=Paciente)
+def get_paciente_by_id(paciente_id: int):
+    for paciente in paciente_db:
+        if paciente.id == paciente_id:
+            return paciente
+    raise HTTPException(status_code=404, detail="Paciente no encontrada")
 
-# Operación para editar una persona por ID
-@app.put("/persona/{person_id}", response_model=Person)
-def update_person(person_id: int, updated_person: Person):
-    for index, person in enumerate(people_db):
-        if person.id == person_id:
-            people_db[index] = updated_person
-            return updated_person
-    raise HTTPException(status_code=404, detail="Persona no encontrada")
+# Operación para editar una paciente por ID
+@app.put("/paciente/{paciente_id}", response_model=Paciente)
+def update_paciente(paciente_id: int, updated_person: Paciente):
+    for index, paciente in enumerate(paciente_db):
+        if paciente.id == paciente_id:
+            paciente_db[index] = updated_paciente
+            return updated_paciente
+    raise HTTPException(status_code=404, detail="Paciente no encontrada")
 
-# Operación para eliminar una persona por ID
-@app.delete("/persona/{person_id}", response_model=Person)
-def delete_person(person_id: int):
-    for index, person in enumerate(people_db):
-        if person.id == person_id:
-            deleted_person = people_db.pop(index)
-            return deleted_person
-    raise HTTPException(status_code=404, detail="Persona no encontrada")
+# Operación para eliminar una paciente por ID
+@app.delete("/paciente/{paciente_id}", response_model=Paciente)
+def delete_paciente(paciente_id: int):
+    for index, paciente in enumerate(paciente_db):
+        if paciente.id == paciente_id:
+            deleted_paciente = paciente_db.pop(index)
+            return deleted_paciente
+    raise HTTPException(status_code=404, detail="Paciente no encontrada")
