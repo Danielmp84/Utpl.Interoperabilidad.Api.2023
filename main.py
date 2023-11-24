@@ -11,6 +11,11 @@ class Paciente(BaseModel):
     cedula: str
     id: int
     city: str
+    Cie10: str
+    seguro: str
+    direccion: str
+    
+
 
 # Lista para almacenar paciente (simulación de base de datos)
 paciente_db = []
