@@ -2,7 +2,26 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 
-app = FastAPI()
+app = FastAPI(
+    title="API de pacientes",
+    description="API para el manejo de pacientes de la clinica",
+    version="1.0.1",
+    contact={
+        "name": "Daniel Moreira",
+        "email": "wdmoreira3@utpl.edu.ec",
+        "url": "https://github.com/Danielmp84/Utpl.Interoperabilidad.Api.2023"
+    },
+    license_info={
+        "name": "MIT License",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    openapi_tags=[
+        {
+            "name": "Persona",
+            "description": "Operaciones para el manejo de personas"
+        }
+    ]
+)
 
 # Modelo de datos para una paciente
 class Paciente(BaseModel):
