@@ -17,8 +17,8 @@ app = FastAPI(
     },
     openapi_tags=[
         {
-            "name": "Persona",
-            "description": "Operaciones para el manejo de personas"
+            "name": "Pacientes",
+            "description": "Operaciones para el manejo de pacientes"
         }
     ]
 )
@@ -39,18 +39,18 @@ class Paciente(BaseModel):
 paciente_db = []
 
 # Operación para crear una paciente
-@app.post("/paciente/", response_model=Paciente)
+@app.post("/paciente/", response_model=Paciente,tags=["Pacientes"])
 def create_paciente(paciente: Paciente):
     paciente_db.append(paciente)
     return paciente
 
 # Operación para obtener todas las paciente
-@app.get("/paciente/", response_model=List[Paciente])
+@app.get("/paciente/", response_model=List[Paciente],tags=["Pacientes"])
 def get_all_paciente():
     return paciente_db
 
 # Operación para obtener una paciente por ID
-@app.get("/paciente/{paciente_id}", response_model=Paciente)
+@app.get("/paciente/{paciente_id}", response_model=Paciente,tags=["Pacientes"])
 def get_paciente_by_id(paciente_id: int):
     for paciente in paciente_db:
         if paciente.id == paciente_id:
@@ -58,7 +58,7 @@ def get_paciente_by_id(paciente_id: int):
     raise HTTPException(status_code=404, detail="Paciente no encontrada")
 
 # Operación para editar una paciente por ID
-@app.put("/paciente/{paciente_id}", response_model=Paciente)
+@app.put("/paciente/{paciente_id}", response_model=Paciente,tags=["Pacientes"])
 def update_paciente(paciente_id: int, updated_paciente: Paciente):
     for index, paciente in enumerate(paciente_db):
         if paciente.id == paciente_id:
@@ -67,7 +67,7 @@ def update_paciente(paciente_id: int, updated_paciente: Paciente):
     raise HTTPException(status_code=404, detail="Paciente no encontrada")
 
 # Operación para eliminar una paciente por ID
-@app.delete("/paciente/{paciente_id}", response_model=Paciente)
+@app.delete("/paciente/{paciente_id}", response_model=Paciente,tags=["Pacientes"])
 def delete_paciente(paciente_id: int):
     for index, paciente in enumerate(paciente_db):
         if paciente.id == paciente_id:
