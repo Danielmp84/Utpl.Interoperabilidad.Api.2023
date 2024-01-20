@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from typing import List
 #importar librerias para el manejo de la base de datos pymongo
 import pymongo
+#libreria para generar un id unico
+import uuid
 
 #configuracion de mongo
 cliente = pymongo.MongoClient("mongodb+srv://DanielMP84:WilmerMoreira@cluster0.mtqai5m.mongodb.net/?retryWrites=true&w=majority")
@@ -35,7 +37,18 @@ class Paciente(BaseModel):
     nombre: str
     edad: int
     cedula: str
-    id: int
+    city: str
+    Cie10: str
+    seguro: str
+    direccion: str
+    observacion: str
+
+# Modelo de repositorio para un paciente
+class PacienteRepositorio(BaseModel):
+    nombre: str
+    edad: int
+    cedula: str
+    id: str
     city: str
     Cie10: str
     seguro: str
@@ -46,10 +59,12 @@ class Paciente(BaseModel):
 paciente_db = []
 
 # Operación para crear una paciente
-@app.post("/paciente/", response_model=Paciente,tags=["Pacientes"])
+@app.post("/paciente/", response_model=PacienteRepositorio,tags=["Pacientes"])
 def create_paciente(paciente: Paciente):
-    result = coleccion.insert_one(paciente.dict())
-    return paciente
+    idPaciente = str(uuid.uuid4())
+    itemPaciente = PacienteRepositorio(nombre=paciente.nombre, edad=paciente.edad, cedula=paciente.cedula, city=paciente.city, id=idPaciente,direccion=paciente.direccion, seguro=paciente.seguro, Cie10=paciente.Cie10, observacion=paciente.observacion)   
+    result = coleccion.insert_one(itemPaciente.dict())
+    return itemPaciente
 
 # Operación para obtener todas las paciente
 @app.get("/paciente/", response_model=List[Paciente],tags=["Pacientes"])
