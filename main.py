@@ -67,9 +67,10 @@ def create_paciente(paciente: Paciente):
     return itemPaciente
 
 # Operación para obtener todas las paciente
-@app.get("/paciente/", response_model=List[Paciente],tags=["Pacientes"])
+@app.get("/paciente/", response_model=List[PacienteRepositorio],tags=["Pacientes"])
 def get_all_paciente():
-    return paciente_db
+    items = list(coleccion.find())
+    return items
 
 # Operación para obtener una paciente por ID
 @app.get("/paciente/{paciente_id}", response_model=Paciente,tags=["Pacientes"])
@@ -89,10 +90,10 @@ def update_paciente(paciente_id: int, updated_paciente: Paciente):
     raise HTTPException(status_code=404, detail="Paciente no encontrada")
 
 # Operación para eliminar una paciente por ID
-@app.delete("/paciente/{paciente_id}", response_model=Paciente,tags=["Pacientes"])
-def delete_paciente(paciente_id: int):
-    for index, paciente in enumerate(paciente_db):
-        if paciente.id == paciente_id:
-            deleted_paciente = paciente_db.pop(index)
-            return deleted_paciente
-    raise HTTPException(status_code=404, detail="Paciente no encontrada")
+@app.delete("/paciente/{paciente_id}", tags=["Pacientes"])
+def delete_paciente(paciente_id: str):
+    result = coleccion.delete_one({"id": paciente_id})
+    if result.deleted_count == 1:
+        return result
+    else:
+        raise HTTPException(status_code=404, detail="Paciente no encontrado")   
